@@ -1,0 +1,11 @@
+@if (!logged) {
+<p>
+  <a href="/register">Register</a>
+  <br>
+  <a href="/login">Login</a>
+</p>
+} @else {
+  <p>
+    <button (click)="logout()">Logout</button>
+  </p>
+}
