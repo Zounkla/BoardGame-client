@@ -1,0 +1,42 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f4f4f7;
+}
+.row {
+  display: flex;
+}
+.cell {
+  width: 30px;
+  font-size: 36px;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.cell:hover {
+  transform: scale(1.1);
+}
+
+.cell.on {
+  background-color: #4ade80;
+  color: #065f46;
+}
+
+.cell.off {
+  background-color: #e5e7eb;
+  color: #9ca3af;
+}
+
+.row {
+  display: flex;
+}

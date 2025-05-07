@@ -1,0 +1,15 @@
+<div class="grid">
+  @for (line of lightsoutGame?.grid; let x = $index; track x) {
+    <div class="row">
+      @for (item of line; let y = $index; track y) {
+        <span
+          class="cell"
+          [class.on]="item"
+          [class.off]="!item"
+          (click)="onCellClick(x, y)">
+          {{ item ? '●' : '○' }}
+        </span>
+      }
+    </div>
+  }
+</div>
