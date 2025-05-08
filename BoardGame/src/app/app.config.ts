@@ -4,6 +4,8 @@ import { routes } from './app.routes';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './config/HttpInterceptor';
+import { ErrorInterceptor } from './config/ErrorInterceptor';
+import { PopupService } from './service/popup.service';
 
 export const appConfig = {
   providers: [
@@ -15,6 +17,12 @@ export const appConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+      deps: [PopupService]
     }
   ]
 };
