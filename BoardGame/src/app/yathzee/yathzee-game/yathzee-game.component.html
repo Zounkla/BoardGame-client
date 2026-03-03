@@ -1,5 +1,50 @@
-<p>yathzee-game works!</p>
-<app-yathzee-dices></app-yathzee-dices>
- @for (dice of yathzeeGame?.dices; track $index) {
-    <p>{{dice}}</p>
- }
+<div class="game-page">
+
+  <div class="game-card">
+
+    <div class="game-header">
+      <h1>🎲 Yathzee</h1>
+      <div class="active-player">
+        Joueur actif :
+        <span class="player-badge">
+          {{ game!.activePlayer!.user.username }}
+        </span>
+      </div>
+    </div>
+
+    <div class="dices-section">
+      <app-yathzee-dices
+        [dices]="game!.dices"
+        [remainingRolls]="game!.remainingRolls"
+        [isActivePlayer]="isActivePlayer()"
+        [gameId]="game!.id"
+        (dicesRolled)="onDicesRolled($event)">
+      </app-yathzee-dices>
+    </div>
+
+    <div class="grid-section">
+      <app-yathzee-grid
+        [bonusPreviews]="game!.bonusPreviews"
+        [players]="game!.players"
+        [isActivePlayer]="isActivePlayer()"
+        [gameId]="game!.id"
+        (chooseBonus)="chooseBonus($event)">
+      </app-yathzee-grid>
+    </div>
+
+  </div>
+
+  <!-- Bandeau Game Over -->
+  <div class="game-over-banner" *ngIf="game?.gameOver">
+    <div class="game-over-content">
+      <h2>Game Over!</h2>
+      <p>
+        Winner{{ getWinners().length > 1 ? 's' : '' }}:
+        <span *ngFor="let player of getWinners(); let last = last">
+        {{ player.user.username }}<span *ngIf="!last">, </span>
+      </span>
+      </p>
+      <button class="primary-btn" routerLink="/">Back to Home</button>
+    </div>
+  </div>
+</div>

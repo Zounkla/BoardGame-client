@@ -1,1 +1,20 @@
-<p>yathzee-dices works!</p>
+<div class="dices-container">
+
+  <div class="dices">
+    <div
+      *ngFor="let dice of dices; index as i"
+      (click)="toggleDice(i)"
+      [class.highlight]="isSelected(i)"
+      class="dice">
+      {{ dice }}
+    </div>
+  </div>
+
+  <button
+    class="roll-button"
+    (click)="rollDices()"
+    [disabled]="!isActivePlayer || remainingRolls === 0">
+    🎲 Lancer les dés ({{ remainingRolls }} restants)
+  </button>
+
+</div>

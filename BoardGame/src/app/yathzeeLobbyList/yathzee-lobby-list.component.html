@@ -1,0 +1,47 @@
+<div class="lobby-page">
+
+  <div class="lobby-card">
+    <h2>🎲 Yathzee Lobbies</h2>
+
+    <div class="create-section">
+      <h3>Create Lobby</h3>
+
+      <div class="input-row">
+        <input
+          type="text"
+          placeholder="Lobby name"
+          [(ngModel)]="lobbyName" />
+
+        <input
+          type="number"
+          min="2"
+          max="6"
+          [(ngModel)]="maxPlayers" />
+      </div>
+
+      <button class="primary-btn" (click)="createLobby()">
+        Create Lobby
+      </button>
+    </div>
+
+    <div class="available-section">
+      <h3>Available Lobbies</h3>
+
+      <div class="lobby-row" *ngFor="let lobby of lobbies">
+        <div class="lobby-info">
+          <span class="lobby-name">{{ lobby.name }}</span>
+          <span class="lobby-players">
+            {{ lobby.players.length }}/{{ lobby.maxPlayers }} players
+          </span>
+        </div>
+
+        <button class="join-btn" (click)="joinLobby(lobby.id)">
+          Join
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

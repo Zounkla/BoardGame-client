@@ -1,1 +1,44 @@
-<p>yathzee-grid works!</p>
+<table class="yathzee-grid">
+  <thead>
+  <tr>
+    <th class="bonus-col">Bonus</th>
+    <th *ngFor="let player of players">
+      {{ player.user.username }}
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let bonus of bonusPreviews; let i = index">
+
+    <td class="bonus-cell">
+      <button
+        *ngIf="isActivePlayer"
+        (click)="onChooseBonus(i)"
+        [disabled]="bonus.alreadyChosen"
+        [class.taken]="bonus.alreadyChosen">
+        {{ bonus.bonusName }}
+        <span class="potential">({{ bonus.potentialScore }})</span>
+      </button>
+
+      <span *ngIf="!isActivePlayer">
+        {{ bonus.bonusName }}
+        <span class="potential">({{ bonus.potentialScore }})</span>
+      </span>
+    </td>
+
+    <td *ngFor="let player of players" class="score-cell">
+      {{ getPlayerScore(player, i) ?? '-' }}
+    </td>
+
+  </tr>
+
+  <tr class="total-row">
+    <td>Total</td>
+    <td *ngFor="let player of players">
+      {{ getTotal(player) }}
+    </td>
+  </tr>
+
+  </tbody>
+</table>

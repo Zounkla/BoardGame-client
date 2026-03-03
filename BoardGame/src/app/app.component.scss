@@ -1,0 +1,283 @@
+/* ================= BODY & GLOBAL ================= */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, #1a1a2e, #0f0f1a 70%);
+  min-height: 100vh;
+  color: white;
+}
+
+.content {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================= LAYOUT ================= */
+
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  margin-top: 70px; /* pour laisser la place à la navbar */
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ================= NAVBAR FIXE & RESPONSIVE ================= */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: rgba(20, 20, 35, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 1000;
+  box-sizing: border-box;
+  overflow-x: auto; /* scroll si trop de liens */
+}
+
+/* logo à gauche */
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+  letter-spacing: 1px;
+  flex-shrink: 0; /* ne rétrécit jamais */
+}
+
+.logo:hover {
+  color: #4c6ef5;
+}
+
+/* conteneur droit (liens + pseudo + bouton logout) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0; /* ne rétrécit jamais */
+}
+
+/* liens génériques */
+.nav-link {
+  text-decoration: none;
+  color: white;
+  opacity: 0.85;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+/* bouton primaire (ex: inscription) */
+.nav-link.register,
+.primary-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #4c6ef5, #15aabf);
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.primary-btn:hover,
+.nav-link.register:hover {
+  transform: scale(1.05);
+}
+
+/* pseudo utilisateur */
+.user-name {
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* bouton logout amélioré */
+.logout-btn {
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  background: #ff4d4f;
+  color: white;
+  font-size: 14px;
+  transition: 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  background: #ff7875;
+  transform: scale(1.05);
+}
+
+/* ===== scroll horizontal si overflow ===== */
+.navbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.navbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+.navbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ================= AUTH PAGES ================= */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.auth-card {
+  background: rgba(20,20,35,0.85);
+  border-radius: 12px;
+  padding: 30px 40px;
+  min-width: 300px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.auth-card h1 {
+  margin: 0 0 10px 0;
+  font-size: 26px;
+}
+
+.auth-card .subtitle {
+  margin-bottom: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.auth-card .form-group {
+  margin-bottom: 15px;
+}
+
+.auth-card label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 14px;
+}
+
+.auth-card input::placeholder {
+  color: rgba(255,255,255,0.6);
+}
+
+.auth-card input:focus {
+  outline: none;
+  border-color: #4c6ef5;
+  box-shadow: 0 0 5px rgba(76,110,245,0.5);
+}
+
+.auth-card .switch {
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.auth-card .switch a {
+  color: #4c6ef5;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.auth-card .switch a:hover {
+  text-decoration: underline;
+}
+
+/* ================= GENERIC CARDS / CONTAINERS ================= */
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(20,20,35,0.85);
+  border-radius: 12px;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.card h2, .card h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.card input, .card select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: rgba(255,255,255,0.05);
+  color: white;
+  margin-right: 10px;
+}
+
+.card input:focus, .card select:focus {
+  outline: none;
+  border-color: #4c6ef5;
+  box-shadow: 0 0 5px rgba(76,110,245,0.5);
+}
+
+.card button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(135deg, #4c6ef5, #15aabf);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.card button:hover {
+  transform: scale(1.05);
+}
+
+/* ================= LISTS ================= */
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 6px;
+}

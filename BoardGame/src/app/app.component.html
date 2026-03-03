@@ -1,7 +1,36 @@
-<!--
-<app-navbar [isLogged]="isLogged" [user]="user"></app-navbar>
--->
-<div class="content">
-  <router-outlet/>
+<div class="app-layout">
+
+  <nav class="navbar">
+
+    <div class="nav-left">
+      <a routerLink="/" class="logo">
+        🎮 GameHub
+      </a>
+    </div>
+
+    <div class="nav-right">
+      <ng-container *ngIf="isLogged(); else guest">
+        <span class="user-badge">
+          👤 {{getUserName() }}
+        </span>
+
+        <button class="logout-btn" (click)="logout()">
+          Logout
+        </button>
+      </ng-container>
+
+      <ng-template #guest>
+        <a routerLink="/login" class="nav-link">Login</a>
+        <a routerLink="/register" class="nav-link register">Register</a>
+      </ng-template>
+    </div>
+
+  </nav>
+
+  <div class="page-content">
+    <router-outlet></router-outlet>
+  </div>
+
 </div>
+
 <ng-toast></ng-toast>

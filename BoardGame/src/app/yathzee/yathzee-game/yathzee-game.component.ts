@@ -1,48 +1,74 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { YathzeeDicesComponent } from '../yathzee-dices/yathzee-dices.component';
-import { YathzeeGame } from '../../model/yathzee/YathzeeGame.model';
-import { YathzeeService } from '../../service/yathzee/yathzeeServices.service';
-import { Router } from '@angular/router';
-import {Subscription} from 'rxjs';
+import { YathzeeGridComponent } from '../yathzee-grid/yathzee-grid.component';
+import { Subscription } from 'rxjs';
+import {YathzeeService} from '../../service/yathzee/yathzeeServices.service';
+import {YathzeeGame} from '../../model/yathzee/YathzeeGame.model';
+import {jwtDecode} from 'jwt-decode';
+import {RouterLink} from '@angular/router';
+
 @Component({
   selector: 'app-yathzee-game',
-  imports: [YathzeeDicesComponent],
+  standalone: true,
+  imports: [CommonModule, YathzeeDicesComponent, YathzeeGridComponent, RouterLink],
   templateUrl: './yathzee-game.component.html',
-  styleUrl: './yathzee-game.component.scss'
+  styleUrls: ['./yathzee-game.component.scss']
 })
 export class YathzeeGameComponent implements OnInit, OnDestroy {
   @Input() id: string = "";
-  yathzeeGame: YathzeeGame | null = null;
-  private gameUpdatesSubscription: Subscription | null = null;
+  game: YathzeeGame | null = null;
+  private sseSub!: Subscription;
 
-  constructor(private service: YathzeeService, private router: Router){}
+  constructor(private gameService: YathzeeService) {}
 
-  ngOnInit(): void {
-    this.service.getGame(this.id).subscribe({
-      next: (data) => {
-        this.yathzeeGame = data;
-        this.listenForGameUpdates();
+  ngOnInit() {
+    this.gameService.getGame(this.id).subscribe(data => {
+      this.game = data;
+    });
+    this.sseSub = this.gameService.subscribeToGameUpdates(this.id).subscribe({
+      next: () => {
+        this.gameService.getGame(this.id).subscribe(data => {
+          this.game = data;
+        });
       },
-      error: (err) => {
-        console.error('Error loading game', err);
-      }
+      error: (err) => console.error('SSE error', err)
     });
   }
 
-  listenForGameUpdates() {
-    this.gameUpdatesSubscription = this.service.subscribeToGameUpdates(this.id).subscribe({
-      next: (updatedGame) => {
-        this.yathzeeGame = updatedGame;
+  ngOnDestroy() {
+    this.sseSub?.unsubscribe();
+  }
+
+  isActivePlayer(): boolean {
+    let username = jwtDecode(<string>localStorage.getItem("authToken"))
+    return this.game?.activePlayer?.user.username === username.sub;
+  }
+
+  chooseBonus(bonusIndex: number) {
+    if (!this.game) return;
+    this.gameService.chooseBonus(this.game.id, bonusIndex).subscribe({
+      next: () => {
+        this.gameService.getGame(this.id).subscribe(data => {
+          this.game = data;
+        });
       },
-      error: (err) => {
-        console.error('Error receiving game updates', err);
-      }
+      error: (err) => console.error('Erreur chooseBonus', err)
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.gameUpdatesSubscription) {
-      this.gameUpdatesSubscription.unsubscribe();
+  onDicesRolled(newDices: number[]) {
+    if (this.game) {
+      this.game.dices = newDices;
+      this.gameService.getGame(this.id).subscribe(data => {
+        this.game = data;
+      });
     }
+  }
+
+  getWinners() {
+    if (!this.game?.players) return [];
+    const maxScore = Math.max(...this.game.players.map(p => p.score));
+    return this.game.players.filter(p => p.score === maxScore);
   }
 }

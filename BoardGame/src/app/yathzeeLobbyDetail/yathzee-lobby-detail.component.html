@@ -1,0 +1,37 @@
+<div class="lobby-page" *ngIf="lobby">
+
+  <div class="lobby-card">
+
+    <h2>🎲 {{ lobby.name }}</h2>
+
+    <div class="players-section">
+      <h3>Players</h3>
+
+      <ul class="players-list">
+        <li *ngFor="let player of lobby.players">
+          <span class="player-badge">
+            {{ player.user.username }}
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="buttons-section">
+      <button
+        class="primary-btn"
+        [disabled]="lobby.players.length >= lobby.maxPlayers"
+        (click)="join()">
+        Join Lobby
+      </button>
+
+      <button
+        class="start-btn"
+        [disabled]="lobby.players.length < 2"
+        (click)="start()">
+        Start Game
+      </button>
+    </div>
+
+  </div>
+
+</div>

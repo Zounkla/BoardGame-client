@@ -1,0 +1,75 @@
+.lobby-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.lobby-card {
+  width: 100%;
+  max-width: 800px;
+  padding: 40px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.create-section,
+.available-section {
+  margin-top: 30px;
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.07);
+  color: white;
+}
+
+.lobby-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.06);
+  transition: 0.3s ease;
+}
+
+.lobby-row:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.lobby-name {
+  font-weight: 600;
+}
+
+.lobby-players {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.join-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4c6ef5, #15aabf);
+  color: white;
+  transition: 0.3s ease;
+}
+
+.join-btn:hover {
+  transform: scale(1.05);
+}

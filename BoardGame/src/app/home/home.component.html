@@ -1,11 +1,36 @@
-@if (!logged) {
-<p>
-  <a href="/register">Register</a>
-  <br>
-  <a href="/login">Login</a>
-</p>
-} @else {
-  <p>
-    <button (click)="logout()">Logout</button>
-  </p>
-}
+<div class="home-container">
+
+  <div class="home-card">
+
+    <h1 class="home-title">🎮 Game Platform</h1>
+
+    @if (!logged) {
+
+      <div class="auth-buttons">
+        <a routerLink="/register" class="btn primary">Register</a>
+        <a routerLink="/login" class="btn secondary">Login</a>
+      </div>
+
+    } @else {
+
+      <div class="user-section">
+        <span class="welcome">Welcome back 👋</span>
+        <button class="btn danger" (click)="logout()">Logout</button>
+      </div>
+
+      <h2 class="lobby-title">Available Lobbies</h2>
+
+      <div class="games-grid">
+
+        <a routerLink="/yathzee/lobbies" class="game-card">
+          <div class="game-icon">🎲</div>
+          <div class="game-name">Yathzee</div>
+        </a>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

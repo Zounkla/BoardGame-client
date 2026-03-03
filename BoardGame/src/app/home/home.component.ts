@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from '../service/platform/authentication.service';
 import {Subscription} from 'rxjs';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './home.component.html',
   standalone: true,
   styleUrl: './home.component.scss'

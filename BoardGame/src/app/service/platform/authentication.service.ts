@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environment/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Credentials} from '../../model/platform/Credentials.model';
-import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {BehaviorSubject, Observable, switchMap, tap} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -35,12 +35,12 @@ export class AuthenticationService {
       username: credentials.username,
       password: credentials.password
     };
-    return this.http.post<string>(this.url + "/register", payload, {headers}).pipe(
-      tap(token => {
-        localStorage.setItem('authToken', token);
-        this.loggedInSubject.next(true);
-      })
-    )
+    return this.http.post<string>(`${this.url}/register`, payload, { headers }).pipe(
+      switchMap(() =>
+        this.http.post<string>(`${this.url}/login`, payload, { headers, responseType: 'text' as 'json' })
+      ),
+      tap(token => localStorage.setItem('authToken', token))
+    );
   }
 
   login(credentials: Credentials): Observable<string>{
