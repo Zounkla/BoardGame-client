@@ -1,44 +1,75 @@
-<table class="yathzee-grid">
-  <thead>
-  <tr>
-    <th class="bonus-col">Bonus</th>
-    <th *ngFor="let player of players">
-      {{ player.user.username }}
-    </th>
-  </tr>
-  </thead>
+<div class="grid-wrapper">
+  <table class="yathzee-grid">
+    <thead>
+    <tr>
+      <th class="bonus-col">Bonus</th>
+      <th *ngFor="let player of players">{{ player.user.username }}</th>
+    </tr>
+    </thead>
 
-  <tbody>
-  <tr *ngFor="let bonus of bonusPreviews; let i = index">
+    <tbody>
 
-    <td class="bonus-cell">
-      <button
-        *ngIf="isActivePlayer"
-        (click)="onChooseBonus(i)"
-        [disabled]="bonus.alreadyChosen"
-        [class.taken]="bonus.alreadyChosen">
-        {{ bonus.bonusName }}
-        <span class="potential">({{ bonus.potentialScore }})</span>
-      </button>
+    <!-- Section haute : SUM_OF_ONE à SUM_OF_SIX (indices 0-5) -->
+    <tr *ngFor="let bonus of bonusPreviews.slice(0, 6); let i = index">
+      <td class="bonus-cell">
+        <button
+          *ngIf="isActivePlayer"
+          (click)="onChooseBonus(i)"
+          [disabled]="bonus.alreadyChosen"
+          [class.taken]="bonus.alreadyChosen">
+          <span class="bonus-name">{{ bonus.label.name }}</span>
+          <span class="bonus-desc" *ngIf="bonus.label.description">{{ bonus.label.description }}</span>
+          <span class="potential">({{ bonus.potentialScore }})</span>
+        </button>
+        <button *ngIf="!isActivePlayer" disabled>
+          <span class="bonus-name">{{ bonus.label.name }}</span>
+          <span class="bonus-desc" *ngIf="bonus.label.description">{{ bonus.label.description }}</span>
+          <span class="potential">({{ bonus.potentialScore }})</span>
+        </button>
+      </td>
+      <td *ngFor="let player of players" class="score-cell">
+        {{ getPlayerScore(player, i) ?? '-' }}
+      </td>
+    </tr>
 
-      <span *ngIf="!isActivePlayer">
-        {{ bonus.bonusName }}
-        <span class="potential">({{ bonus.potentialScore }})</span>
+    <!-- Ligne seuil bonus section haute -->
+    <tr class="bonus-threshold-row">
+      <td class="bonus-cell bonus-threshold-label">Bonus section haute (≥ 63 pts → +35)</td>
+      <td *ngFor="let player of players" class="score-cell">
+      <span [class.bonus-reached]="hasSimpleBonus(player)">
+        {{ getSimpleBonusLabel(player) }}
       </span>
-    </td>
+      </td>
+    </tr>
 
-    <td *ngFor="let player of players" class="score-cell">
-      {{ getPlayerScore(player, i) ?? '-' }}
-    </td>
+    <!-- Section basse : THREE_OF_KIND à CHANCE (indices 6-12) -->
+    <tr *ngFor="let bonus of bonusPreviews.slice(6, 13); let i = index">
+      <td class="bonus-cell">
+        <button
+          *ngIf="isActivePlayer"
+          (click)="onChooseBonus(i + 6)"
+          [disabled]="bonus.alreadyChosen"
+          [class.taken]="bonus.alreadyChosen">
+          <span class="bonus-name">{{ bonus.label.name }}</span>
+          <span class="bonus-desc" *ngIf="bonus.label.description">{{ bonus.label.description }}</span>
+          <span class="potential">({{ bonus.potentialScore }})</span>
+        </button>
+        <button *ngIf="!isActivePlayer" disabled>
+          <span class="bonus-name">{{ bonus.label.name }}</span>
+          <span class="bonus-desc" *ngIf="bonus.label.description">{{ bonus.label.description }}</span>
+          <span class="potential">({{ bonus.potentialScore }})</span>
+        </button>
+      </td>
+      <td *ngFor="let player of players" class="score-cell">
+        {{ getPlayerScore(player, i + 6) ?? '-' }}
+      </td>
+    </tr>
 
-  </tr>
+    <tr class="total-row">
+      <td>Total</td>
+      <td *ngFor="let player of players">{{ getTotal(player) }}</td>
+    </tr>
 
-  <tr class="total-row">
-    <td>Total</td>
-    <td *ngFor="let player of players">
-      {{ getTotal(player) }}
-    </td>
-  </tr>
-
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>

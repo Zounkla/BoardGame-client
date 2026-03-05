@@ -18,6 +18,7 @@ export class YathzeeDicesComponent {
   @Output() dicesRolled = new EventEmitter<number[]>();
 
   selectedDices: number[] = [];
+  isRolling = false;
 
   constructor(private gameService: YathzeeService) {}
 
@@ -32,16 +33,28 @@ export class YathzeeDicesComponent {
     return this.selectedDices.includes(index);
   }
 
+  hasSelectedDice() {
+    return this.selectedDices.length > 0;
+  }
+
   rollDices() {
     if (!this.isActivePlayer || this.remainingRolls === 0) return;
 
+    this.isRolling = true;
+
     this.gameService.rollDices(this.gameId, this.selectedDices).subscribe({
       next: (newGame) => {
-        this.dices = newGame.dices;
-        this.selectedDices = [];
-        this.dicesRolled.emit(this.dices);
+        setTimeout(() => {
+          this.isRolling = false;
+          this.dices = newGame.dices;
+          this.selectedDices = [];
+          this.dicesRolled.emit(this.dices);
+        }, 600);
       },
-      error: (err) => console.error('Erreur rollDices', err)
+      error: (err) => {
+        this.isRolling = false;
+        console.error('Erreur rollDices', err);
+      }
     });
   }
 }

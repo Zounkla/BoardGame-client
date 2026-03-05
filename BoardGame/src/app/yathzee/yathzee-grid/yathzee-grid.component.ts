@@ -18,6 +18,10 @@ export class YathzeeGridComponent {
 
   @Output() chooseBonus = new EventEmitter<number>();
 
+  readonly SIMPLE_LIMIT = 63;
+  readonly SIMPLE_BONUS = 35;
+  readonly SIMPLE_BONUS_INDEX_MAX = 5;
+
   onChooseBonus(index: number) {
     if (!this.isActivePlayer) return;
     this.chooseBonus.emit(index);
@@ -36,5 +40,24 @@ export class YathzeeGridComponent {
 
   getTotal(player: any): number {
     return player.score ?? 0;
+  }
+
+  getSimpleSum(player: any): number {
+    return player.bonuses
+      .filter((b: any) => {
+        const idx = this.bonusPreviews.findIndex(p => p.bonusName === b.bonusName);
+        return idx >= 0 && idx <= this.SIMPLE_BONUS_INDEX_MAX;
+      })
+      .reduce((sum: number, b: any) => sum + b.score, 0);
+  }
+
+  hasSimpleBonus(player: any): boolean {
+    return player.bonuses.some((b: any) => b.bonusName === 'SIMPLE_SUM_BONUS');
+  }
+
+  getSimpleBonusLabel(player: any): string {
+    if (this.hasSimpleBonus(player)) return `${this.SIMPLE_BONUS}`;
+    const remaining = this.SIMPLE_LIMIT - this.getSimpleSum(player);
+    return `-  ${remaining}`;
   }
 }

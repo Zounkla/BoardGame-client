@@ -7,6 +7,7 @@ import {YathzeeService} from '../../service/yathzee/yathzeeServices.service';
 import {YathzeeGame} from '../../model/yathzee/YathzeeGame.model';
 import {jwtDecode} from 'jwt-decode';
 import {RouterLink} from '@angular/router';
+import {YATHZEE_BONUS_LABELS} from '../../model/yathzee/YathzeeBonus.labels';
 
 @Component({
   selector: 'app-yathzee-game',
@@ -24,12 +25,12 @@ export class YathzeeGameComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.gameService.getGame(this.id).subscribe(data => {
-      this.game = data;
+      this.initGame(data)
     });
     this.sseSub = this.gameService.subscribeToGameUpdates(this.id).subscribe({
       next: () => {
         this.gameService.getGame(this.id).subscribe(data => {
-          this.game = data;
+          this.initGame(data)
         });
       },
       error: (err) => console.error('SSE error', err)
@@ -50,7 +51,7 @@ export class YathzeeGameComponent implements OnInit, OnDestroy {
     this.gameService.chooseBonus(this.game.id, bonusIndex).subscribe({
       next: () => {
         this.gameService.getGame(this.id).subscribe(data => {
-          this.game = data;
+          this.initGame(data)
         });
       },
       error: (err) => console.error('Erreur chooseBonus', err)
@@ -61,7 +62,7 @@ export class YathzeeGameComponent implements OnInit, OnDestroy {
     if (this.game) {
       this.game.dices = newDices;
       this.gameService.getGame(this.id).subscribe(data => {
-        this.game = data;
+        this.initGame(data)
       });
     }
   }
@@ -70,5 +71,13 @@ export class YathzeeGameComponent implements OnInit, OnDestroy {
     if (!this.game?.players) return [];
     const maxScore = Math.max(...this.game.players.map(p => p.score));
     return this.game.players.filter(p => p.score === maxScore);
+  }
+
+  initGame(data: YathzeeGame) {
+    this.game = data;
+    this.game.bonusPreviews = this.game.bonusPreviews.map(preview => ({
+      ...preview,
+      label: YATHZEE_BONUS_LABELS[preview.bonusName]
+    }));
   }
 }

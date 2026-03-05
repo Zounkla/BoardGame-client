@@ -63,11 +63,6 @@ export class YathzeeService {
   getAvailableLobbies() {
     return this.http.get<YathzeeLobby[]>(`${this.lobbyUrl}/available`);
   }
-
-  getGameByLobby(id: string) {
-    return this.http.get<YathzeeGame>(`${this.gameUrl}/${id}`);
-  }
-
   getLobby(id: number) {
     return this.http.get<YathzeeLobby>(`${this.lobbyUrl}/${id}`);
   }
